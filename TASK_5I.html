@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | ShopSmart Pro</title>
+  <link rel="stylesheet" href="TASK_5.css">
+</head>
+<body>
+  <header>
+    <h1><i class="cart-icon">🛒</i> Your Cart</h1>
+    <a href="TASK_5.html" style="color:white;text-decoration:none;">← Back to Shop</a>
+  </header>
+
+  <main>
+    <div class="cart-container" id="cartContainer"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 ShopSmart Pro | Built with HTML, CSS & JS</p>
+  </footer>
+
+  <script>
+    const cartContainer = document.getElementById('cartContainer');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function displayCart() {
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      cartContainer.innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+          <img src="${item.thumbnail}" alt="${item.title}">
+          <div style="flex:1; margin-left:10px;">
+            <h4>${item.title}</h4>
+            <p>$${item.price}</p>
+          </div>
+          <button class="remove-btn" onclick="removeItem(${i})">Remove</button>
+        </div>
+      `).join('');
+
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartContainer.innerHTML += `<div class="total">Total: $${total.toFixed(2)}</div>`;
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      displayCart();
+    }
+
+    displayCart();
+  </script>
+</body>
+</html>
